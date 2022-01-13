@@ -1,0 +1,26 @@
+server:
+  port: 5003
+
+spring:
+  application:
+    name: task
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://mysql-all:3306/TaskMySQL
+    username: root
+    password: admin123
+
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: admin
+    password: admin
+    virtual-host: /
+mybatis:
+  #指定mybatis用哪个配置文件
+  mapper-locations: classpath:mapper/*.xml
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka:8761/eureka

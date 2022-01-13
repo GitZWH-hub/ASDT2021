@@ -1,0 +1,113 @@
+version: "3"
+services:
+    eureka:
+        image: eureka
+        build: eureka-server/
+        container_name: eureka
+        ports:
+            - 8761:8761
+        networks:
+            - my-network
+
+    rabbitmq:
+        depends_on:
+            - eureka
+        image: 'rabbitmq:management'
+        container_name: rabbitmq
+#        restart: always
+        environment:
+            RABBITMQ_DEFAULT_USER: guest
+            RABBITMQ_DEFAULT_PASS: guest
+        ports:
+            - 5672:5672
+            - 15672:15672
+        networks:
+            - my-network
+
+    mysql-all:
+        build: Database/ALL
+        image: mysql-all
+        container_name: mysql-all
+    #        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: admin123
+        ports:
+            - 3306:3306
+        networks:
+            - my-network
+#    staff-mysql:
+#        build: Database/staff
+#        image: staff-mysql
+#        container_name: staff-mysql
+##        restart: always
+#        environment:
+#            MYSQL_ROOT_PASSWORD: admin123
+#        ports:
+#            - 3307:3306
+#        networks:
+#            - my-network
+#
+#    user-mysql:
+#        build: Database/user
+#        image: user-mysql
+#        container_name: user-mysql
+#        environment:
+#            MYSQL_ROOT_PASSWORD: admin123
+#        ports:
+#            - 3308:3306
+#        networks:
+#            - my-network
+#
+#    task-mysql:
+#        build: Database/task
+#        image: task-mysql
+#        container_name: task-mysql
+#        environment:
+#            MYSQL_ROOT_PASSWORD: admin123
+#        ports:
+#            - 3309:3306
+#        networks:
+#            - my-network
+
+    staff:
+        depends_on:
+            - eureka
+        build: Staff/
+        image: staff
+        container_name: staff
+#        restart: always
+        ports:
+            - 5001:5001
+#        command: ["wait-for-it.sh", "eureka:8761", "--", "catalina.sh", "run"]
+        networks:
+            - my-network
+
+    user:
+        depends_on:
+            - eureka
+        build: User/
+        image: user
+        container_name: user
+        restart: always
+        ports:
+            - 5002:5002
+#        command: ["wait-for-it.sh", "eureka:8761", "--", "catalina.sh", "run"]
+        networks:
+            - my-network
+
+    task:
+        depends_on:
+            - eureka
+        build: Task/
+        image: task
+        container_name: task
+        restart: always
+        ports:
+            - 5003:5003
+#        command: ["wait-for-it.sh", "eureka:8761", "--", "catalina.sh", "run"]
+        networks:
+            - my-network
+
+networks:
+    my-network: 
+        driver: bridge

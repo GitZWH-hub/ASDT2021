@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.task.mapper.UserMapper">
+    <select id="findTask" parameterType="int" resultType="com.example.task.entity.Task">
+        select *from task where id=#{id}
+    </select>
+    <insert id="insertTask" parameterType="com.example.task.controller.Request.AddTask">
+        insert into task(id, name, state) values(#{id}, #{name}, #{state})
+    </insert>
+    <update id="updateTask" parameterType="int">
+        update task set state = '1' where id=#{id}
+    </update>
+<!--    <select id="getUserTask" parameterType="int" resultType="int">-->
+<!--        select state from task where id=#{id}-->
+<!--    </select>-->
+</mapper>
